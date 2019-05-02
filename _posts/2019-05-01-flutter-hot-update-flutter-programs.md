@@ -15,7 +15,7 @@ tags:
 
 ### 1. 应用截图
 
-图中没个图标代表一个独立的 Flutter 程序。截图中的两个程序为 Flutter 官方提供的两个 Demo 。
+截图中首页的每个图标代表一个独立的 Flutter 程序。 Gif 中演示的为 Flutter 官方提供的两个独立的 Demo 程序。
 
 > Gif 截图 2.4M ，实际效果，待 Gif 完全加载 。
 
