@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "NNDecimalNumber 链式调用 NSDecimalNumber 数值计算"
-subtitle: 'NNDecimalNumber 链式调用 NSDecimalNumber 数值计算'
+title: "NNDecimalNumber 提供链式调用计算 NSDecimalNumber"
+subtitle: '提供 NSDecimalNumber 运算扩展 ，通过链式调用简化数值计算。'
 author: "顾海军"
 header-style: text
 tags:
