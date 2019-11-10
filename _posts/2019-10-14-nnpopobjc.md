@@ -29,7 +29,6 @@ NNPopObjc 受面向协议编程的启发，为协议提供了实现扩展的功�
 @protocol NNDemoProtocol <NSObject>
 
 @optional
-@property (nonatomic, strong) NSString* whoImI;
 - (void)sayHelloPop;
 + (void)sayHelloPop;
 
@@ -41,23 +40,15 @@ NNPopObjc 受面向协议编程的启发，为协议提供了实现扩展的功�
 扩展协议需要在 `.m` 中实现
 
 ```objective-c
-@nn_extension(NNDemoProtocol, NSObject)
+/// 默认协议扩展
+@nn_extension(NNDemoProtocol)
 
 + (void)sayHelloPop {
-    DLog(@"+[%@ %s] say hello pop", self, sel_getName(_cmd));
+    DLog(@"+[%@ %s] code say hello pop", self, sel_getName(_cmd));
 }
 
 - (void)sayHelloPop {
-    DLog(@"-[%@ %s] say hello pop", [self class], sel_getName(_cmd));
-}
-
-- (NSString *)whoImI {
-    NSString *whoImI = [NSString stringWithFormat:@"-[%@ %s] I am %@", [self class], sel_getName(_cmd), nil];
-    return whoImI;
-}
-
-- (void)setWhoImI:(NSString *)whoImI {
-    DLog(@"-[%@ %s%@]", [self class], sel_getName(_cmd), whoImI);
+    DLog(@"-[%@ %s] code say hello pop", [self class], sel_getName(_cmd));
 }
 
 @end
@@ -68,9 +59,7 @@ NNPopObjc 受面向协议编程的启发，为协议提供了实现扩展的功�
 - 创建类
 
 ```objective-c
-@interface NNDemoObjc : NSObject <NNDemoProtocol>
-
-@property (nonatomic, strong) NSString *name;
+@interface NNDemoObjc : NSObject <NNDemoNameProtocol>
 
 @end
 ```
@@ -89,20 +78,15 @@ NNPopObjc 受面向协议编程的启发，为协议提供了实现扩展的功�
 
 ```objective-c
 [NNDemoObjc sayHelloPop];
-NNDemoObjc *objc = [NNDemoObjc new];
-[objc sayHelloPop];
-objc.whoImI = @"objc";
-DLog(@"%@", objc.whoImI);
+[[NNDemoObjc new] sayHelloPop];
 ```
 
 - 输出日志
 
-```objective-c
-+[NNDemoObjc sayHelloPop] say hello pop
--[NNDemoObjc sayHelloPop] say hello pop
--[NNDemoObjc whoImI] I am objc
+```objective-cc
++[NNDemoObjc sayHelloPop] code say hello pop
+-[NNDemoObjc sayHelloPop] code say hello pop
 ```
-
 
 ## 安装
 
@@ -125,7 +109,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
 target 'TargetName' do
-pod 'NNPopObjc', '~> 0.0.3'
+pod 'NNPopObjc', '~> 0.2.1'
 end
 ```
 
@@ -146,6 +130,3 @@ pod install
 ```bash
 pod install --repo-update
 ```
-
-## 其他
-Inspiration [RLArithmetic](https://github.com/RylynnLai/RLArithmetic)
