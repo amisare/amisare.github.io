@@ -138,15 +138,15 @@ nn_pop_if_less_or_equal(A, B)
 - 性能问题：避免代码入侵，使用协议扩展类 + load() 作为注入时机。那么，在一个协议实现了多个扩展的情况下，为了实现注入，每个协议扩展的 + load() 都需要遍历一遍类列表。这样无疑会增加 + load() 耗时，影响应用启动。
 - 时序问题：由于 + load() 方法的调用顺序是变化的，如果类或协议存在多个继承关系就可能会导致注入结果与期望的不同。
 
-### __attribute__((constructor))
+### \_\_attribute\_\_((constructor))
 
-在 main() 函数之前，被 __attribute__((constructor)) 修饰的函数可以作为一个注入的时机。例如我们非常熟悉的在函数 hook 框架  [fishhook](https://github.com/facebook/fishhook)，阿里开源协程开发框架  [coobjc](https://github.com/alibaba/coobjc) ，都选择了在 __attribute__((constructor)) 函数位置作为注入时机。
+在 main() 函数之前，被 \_\_attribute\_\_((constructor)) 修饰的函数可以作为一个注入的时机。例如我们非常熟悉的在函数 hook 框架  [fishhook](https://github.com/facebook/fishhook)，阿里开源协程开发框架  [coobjc](https://github.com/alibaba/coobjc) ，都选择了在 \_\_attribute\_\_((constructor)) 函数位置作为注入时机。
 
-使用在 __attribute__((constructor)) 函数中实现注入，程序就会有以下特点：
+使用在 \_\_attribute\_\_((constructor)) 函数中实现注入，程序就会有以下特点：
 
-- 对遵守协议类 + load() 的影响：__attribute__((constructor)) 函数的执行在所有 + load() 方法之后，main() 函数之前。如果想在遵守协议类中对协议扩展的方法进行交换（MethodSwizz）是无法实现的，因为在遵守协议类的 + load() 中协议扩展的方法还未被注入，此时的方法实现并不存在。
+- 对遵守协议类 + load() 的影响：\_\_attribute\_\_((constructor)) 函数的执行在所有 + load() 方法之后，main() 函数之前。如果想在遵守协议类中对协议扩展的方法进行交换（MethodSwizz）是无法实现的，因为在遵守协议类的 + load() 中协议扩展的方法还未被注入，此时的方法实现并不存在。
 
-## 初识 __attribute__((constructor)) 函数
+## 初识 \_\_attribute\_\_((constructor)) 函数
 
 来自 [GCC](https://gcc.gnu.org/onlinedocs/gcc-6.2.0/gcc/Common-Function-Attributes.html) 上的一些描述：
 
@@ -168,7 +168,7 @@ You may provide an optional integer priority to control the order in which const
 
 构造属性的函数会在进入 main () 之前被自动调用。
 
-那函数到底是在什么位置被调用那？在 XCode 中 __attribute__((constructor)) 函数中增加断点，可以得到如下函数调用栈：
+那函数到底是在什么位置被调用那？在 XCode 中 \_\_attribute\_\_((constructor)) 函数中增加断点，可以得到如下函数调用栈：
 
 ```
 * thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 2.1
@@ -188,12 +188,12 @@ You may provide an optional integer priority to control the order in which const
     frame #13: 0x0000000105afb025 dyld`_dyld_start + 37
 ```
 
-其中 popobjc::initializer 是我们定义的 __attribute__((constructor)) 函数。
-显然  __attribute__((constructor)) 函数由 dyld 中的 ImageLoaderMachO::doModInitFunctions 调用。dyld 是开源的，源码可以在 [dyld](https://opensource.apple.com/tarballs/dyld/) 下载，**NNPopObjc**中**获取线索**小节中也有对 dyld 源码的参考。对于更多 Image 加载过程的相关内容可以参考 dyld 源码。
+其中 popobjc::initializer 是我们定义的 \_\_attribute\_\_((constructor)) 函数。
+显然  \_\_attribute\_\_((constructor)) 函数由 dyld 中的 ImageLoaderMachO::doModInitFunctions 调用。dyld 是开源的，源码可以在 [dyld](https://opensource.apple.com/tarballs/dyld/) 下载，**NNPopObjc**中**获取线索**小节中也有对 dyld 源码的参考。对于更多 Image 加载过程的相关内容可以参考 dyld 源码。
 
 ## 小结
 
-到此为止，本节介绍了常见的注入时机。这里 **NNPopObjc** 在0.6.0及以后的版本中也选择了 __attribute__((constructor)) 函数作为项目的注入时机。
+到此为止，本节介绍了常见的注入时机。这里 **NNPopObjc** 在0.6.0及以后的版本中也选择了 \_\_attribute\_\_((constructor)) 函数作为项目的注入时机。
 
 # 留下线索
 
@@ -202,7 +202,7 @@ You may provide an optional integer priority to control the order in which const
 - 协议扩展类（协议扩展实现的容器类）
 - 遵守协议类
 
-在 **NNPopObjc** 的实现中，**协议**和**协议扩展类**的信息在 `@nn_extension` 对协议进行扩展时被保存到了**数据段**（data segment）中， 之后在 __attribute__((constructor)) 函数注入时，从**数据段**获得**协议**和**协议扩展类**的信息。
+在 **NNPopObjc** 的实现中，**协议**和**协议扩展类**的信息在 `@nn_extension` 对协议进行扩展时被保存到了**数据段**（data segment）中， 之后在 \_\_attribute\_\_((constructor)) 函数注入时，从**数据段**获得**协议**和**协议扩展类**的信息。
 
 ## 数据段/分段
 
@@ -325,7 +325,7 @@ typedef struct {
 
 ## 小结
 
-在 **NNPopObjc** 中协议扩展注入的信息由结构体 `nn_pop_extension_description_t` 描述，注入信息的结构体变量被保存到了名为 `__nn_pop_objc__ ` 的数据段分段中。
+在 **NNPopObjc** 中协议扩展注入的信息由结构体 `nn_pop_extension_description_t` 描述，注入信息的结构体变量被保存到了名为 `__nn_pop_objc__` 的数据段分段中。
 
 # 获取线索
 
@@ -357,10 +357,10 @@ mach_header 保存在对象文件的头部，**mach_header** 结构体描述请�
 
 ## 获取 **mach_header**
 
-### 通过 __attribute__((constructor)) 函数获取
+### 通过 \_\_attribute\_\_((constructor)) 函数获取
 
-__attribute__((constructor)) 函数是一种函数回调，但是回调函数的格式缺并没有给出。这里我们就要参考文中提到的 dyld 源码。
-**最好的时机** 章节中提到 __attribute__((constructor)) 函数最终由 dyld 中 `ImageLoaderMachO::doModInitFunctions` 方法调用。
+\_\_attribute\_\_((constructor)) 函数是一种函数回调，但是回调函数的格式缺并没有给出。这里我们就要参考文中提到的 dyld 源码。
+**最好的时机** 章节中提到 \_\_attribute\_\_((constructor)) 函数最终由 dyld 中 `ImageLoaderMachO::doModInitFunctions` 方法调用。
 
 在 `ImageLoaderMachO::doModInitFunctions` 方法中我们会发现被调用的初始化函数为 `Initializer` 类型的函数，`Initializer` 定义如下：
 
@@ -376,7 +376,7 @@ struct ProgramVars
 typedef void (*Initializer)(int argc, const char* argv[], const char* envp[], const char* apple[], const ProgramVars* vars);
 ```
 
-`ProgramVars ` 结构体中 `const void*		mh;` 即是我们需要的 **mach_header** 。根据 dyld 中定义的函数定义，实现 __attribute__((constructor)) 函数，如下：
+`ProgramVars ` 结构体中 `const void*		mh;` 即是我们需要的 **mach_header** 。根据 dyld 中定义的函数定义，实现 \_\_attribute\_\_((constructor)) 函数，如下：
 
 ```
 typedef struct
@@ -411,15 +411,54 @@ __attribute__((constructor)) void initializer(int argc,
 }
 ```
 
-这样我们就能够在 __attribute__((constructor)) 函数中得到 **mach_header** 变量了。
+这样我们就能够在 \_\_attribute\_\_((constructor)) 函数中得到 **mach_header** 变量了。
+
+但是，这里需要注意的是，\_\_attribute\_\_((constructor)) 函数的调用是所在 Mach-O 文件加载 doModInit 时调用。也就是说这里得到的 **mach_header** 是当前加载的 Mach-O 文件的 mhp 。那么就可能会影响 NNPopObjc 中 `__nn_pop_objc__` section 的加载：
+
+1. NNPopObjc 作为动态库集成：得到的 **mach_header** 为 NNPopObjc 动态库的 Mach-O 文件的 mhp，只能加载 NNPopObjc 动态库 Mach-O 的 `__nn_pop_objc__` section 。
+2. NNPopObjc 作为静态库集成：
+    - NNPopObjc 中包含 OC 对象：得到的 **mach_header** 为最终连接的 Mach-O 文件的 mhp，只能加载最终连接 Mach-O 的 `__nn_pop_objc__` section 。
+    - NNPopObjc 中不包含 OC 对象：\_\_attribute\_\_((constructor)) 不会被调用。
+    
 
 ### 通过 **_dyld_register_func_for_add_image** 获取
 
-通过 `_dyld_register_func_for_add_image` 注册函数回调也能够获得 **mach_header** ，函数的具体使用参考 `_dyld_register_func_for_add_image ` 函数声明。这里需要注意的是，程序执行过程中注册的回调函数会被调用多次。
+通过 `_dyld_register_func_for_add_image` 注册回调函数获得 **mach_header** 。
+
+```
+/// Image loaded callback function.
+/// @param mhp mhp
+/// @param vmaddr_slide vmaddr_slide
+void imageLoadedCallback(const struct mach_header *mhp, intptr_t vmaddr_slide) {
+    
+    nn_pop_mach_header *_mhp = (nn_pop_mach_header *)mhp;
+    
+    loadSection(mhp,
+                nn_pop_metamacro_stringify(nn_pop_section_name),
+                [](std::vector<ProtocolExtension *> protocolExtensions) {
+        ......
+    });
+}
+
+/// Initializer function is called by ImageLoaderMachO::doModInitFunctions at dyld project.
+/// @note dyld project: https://opensource.apple.com/tarballs/dyld/
+/// @note fix: The dynamic library section cannot be loaded when the protocol extensions
+/// are implemented in a dynamic library.
+__attribute__((constructor)) void initializer() {
+    
+    _dyld_register_func_for_add_image(imageLoadedCallback);
+}
+```
+
+这里 `imageLoadedCallback` 回调函数会被调用多次，每次回调中的 mhp 参数对应一个 Mach-O 文件 。
+
+### 其他方式
+
+其它获取方式可参考 <mach-o/dyld.h> 中相关函数。
 
 ## 小结
 
-在 **NNPopObjc** 中在 __attribute__((constructor)) 函数获取了 **mach_header** 结构体变量，再使用 `getsectiondata` 函数读取了保存在 `__nn_pop_objc__ ` 数据段分段中用于注入的信息。
+在 **NNPopObjc** 中使用 **_dyld_register_func_for_add_image** 注册回调的方式依次获取所有 **mach_header** 变量，并通过 `getsectiondata` 函数尝试读取 **mach_header** 对应 Mach-O 文件保存在 `__nn_pop_objc__ ` 数据段分段中用于注入的信息，最后进行扩展注入。
 
 # 协议扩展注入
 
