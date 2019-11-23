@@ -454,7 +454,7 @@ __attribute__((constructor)) void initializer() {
 
 ### 其他方式
 
-其它获取方式可参考 <mach-o/dyld.h> 中相关函数。
+关于 **mach_header** 的一些其它获取方式可参考 <mach-o/dyld.h> 中相关函数。
 
 ## 小结
 
