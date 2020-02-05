@@ -50,7 +50,7 @@ int Foo(bool isBar)
 
 此时，如果你是个强迫症，那么煎熬将一直伴随着整个项目的开发。
 
-这里对一些常见的编程风格进行了简单介绍，见怪不怪的今后可能随其自然也就不再纠结了。
+这里对一些常见的编程风格进行了简单介绍，当你见怪不怪之后随其自然也就不再纠结了。
 
 
 # 常见编程风格
@@ -265,3 +265,7 @@ int Foo(bool isBar) {
         return 0; }
 ```
 
+#参考
+
+[https://en.wikipedia.org/wiki/Indentation_style](https://en.wikipedia.org/wiki/Indentation_style)
+[https://www.kernel.org/doc/html/v4.15/translations/zh_CN/coding-style.html](https://www.kernel.org/doc/html/v4.15/translations/zh_CN/coding-style.html)
