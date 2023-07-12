@@ -20,7 +20,7 @@
 // make all images responsive
 /* 
  * Unuse by Hux
- * actually only -Pages can't use it and only post-img need it.
+ * actually only Portfolio-Pages can't use it and only post-img need it.
  * so I modify the _layout/post and CSS to make post-img responsive!
  */
 // $(function() {

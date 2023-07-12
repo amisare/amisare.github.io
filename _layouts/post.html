@@ -22,11 +22,7 @@ layout: default
 
                 <!-- Multi-Lingual -->
                 {% if page.multilingual %}
-                <!-- Language Selector -->
-                <select class="sel-lang" onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
-                    <option value="0" selected> 中文 Chinese </option>
-                    <option value="1"> 英文 English </option>
-                </select>
+                    {% include multilingual-sel.html %}
                 {% endif %}
 
 				{{ content }}
@@ -68,7 +64,7 @@ layout: default
             </div>  
 
     <!-- Side Catalog Container -->
-        {% if page.catalog %}
+        {% unless page.no-catalog %}
             <div class="
                 col-lg-2 col-lg-offset-0
                 visible-lg-block
@@ -82,7 +78,7 @@ layout: default
                     <ul class="catalog-body"></ul>
                 </div>
             </div>
-        {% endif %}
+        {% endunless %}
 
     <!-- Sidebar Container -->
             <div class="
@@ -156,9 +152,9 @@ layout: default
 <script>
     async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
         anchors.options = {
-          visible: 'always',
+          visible: 'hover',
           placement: 'right',
-          icon: '#'
+          // icon: '#'
         };
         anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
     })

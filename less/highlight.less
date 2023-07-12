@@ -20,6 +20,12 @@ pre.highlight {
   color: #960050;
   background-color: #1e0010;
 }
+.language-coq .highlight .err {
+  // Hux: a temp workaround to fix for Coq math symbol
+  // @see https://github.com/rouge-ruby/rouge/issues/1312
+  &:extend(.highlight .k);
+  background-color: transparent;
+}
 .highlight .k {
   color: #c678dd;
 }
@@ -216,6 +222,12 @@ pre.highlight {
     padding: 0;
     word-wrap: normal; // Safari Bug
   }
+  .rouge-table {
+    .rouge-gutter,
+    .rouge-code {
+      border: 0 !important;
+    }
+  }
   .rouge-code {
     pre {
       color: #abb2bf; // default color for nil-lang code
@@ -249,13 +261,16 @@ pre.highlight {
   }
 }
 /* Landscape phones and down */
-@media (max-width: 480px) { 
+@media (max-width: 480px) {
   .highlighter-rouge .highlight {
     margin-left: -15px;
     margin-right: -15px;
     border-radius: 0px;
     td.rouge-gutter {
-      width: 46px;
+      width: 36px;
+    }
+    table > tbody > tr > td > pre {
+      padding: 14px 10px;
     }
   }
 }

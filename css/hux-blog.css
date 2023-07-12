@@ -1,8 +1,3 @@
-/*!
- * Hux Blog v1.7.0 (http://huxpro.github.io)
- * Copyright 2018 Hux <huxpro@gmail.com>
- */
-
 @media (min-width: 1200px) {
   .post-container,
   .sidebar-container {
@@ -19,11 +14,11 @@
   font-size: 14px;
 }
 .sidebar-container h5 {
-  color: #cccccc;
+  color: #a3a3a3;
   padding-bottom: 1em;
 }
 .sidebar-container h5 a {
-  color: #cccccc !important;
+  color: #a3a3a3 !important;
   text-decoration: none;
 }
 .sidebar-container a {
@@ -105,29 +100,36 @@
   text-overflow: ellipsis;
 }
 .side-catalog .catalog-body .h1_nav,
-.side-catalog .catalog-body .h2_nav,
-.side-catalog .catalog-body .h3_nav {
+.side-catalog .catalog-body .h2_nav {
   margin-left: 0;
   font-size: 13px;
   font-weight: bold;
 }
-.side-catalog .catalog-body .h4_nav,
-.side-catalog .catalog-body .h5_nav,
-.side-catalog .catalog-body .h6_nav {
-  margin-left: 10px;
+.side-catalog .catalog-body .h3_nav {
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: bold;
+}
+.side-catalog .catalog-body .h4_nav {
+  margin-left: 12px;
   font-size: 12px;
 }
-.side-catalog .catalog-body .h4_nav a,
-.side-catalog .catalog-body .h5_nav a,
-.side-catalog .catalog-body .h6_nav a {
+.side-catalog .catalog-body .h4_nav a {
+  max-width: 170px;
+}
+.side-catalog .catalog-body .h5_nav .h6_nav {
+  margin-left: 18px;
+  font-size: 12px;
+}
+.side-catalog .catalog-body .h5_nav .h6_nav a {
   max-width: 170px;
 }
 .side-catalog .catalog-body .active {
   border-radius: 4px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
 .side-catalog .catalog-body .active a {
-  color: #0085a1!important;
+  color: #0085a1 !important;
 }
 @media (max-width: 1200px) {
   .side-catalog {
@@ -184,7 +186,7 @@
     Multi-line snackbar height: 80 dp
     Text: Roboto Regular 14 sp
     Action button: Roboto Medium 14 sp, all-caps text
-    Default background fill: #323232 100%  
+    Default background fill: #323232 100%
   */
     left: 0px;
     right: 0px;
@@ -215,7 +217,7 @@
   color: #000000;
   text-transform: uppercase;
   border-radius: 3px;
-  outline-color: #cccccc;
+  outline-color: #a3a3a3;
 }
 .paper-button:hover {
   cursor: pointer;
@@ -247,12 +249,12 @@
   color: #fff;
 }
 .paper-button[disabled] {
-  background-color: #EAEAEA !important;
-  color: #A8A8A8 !important;
+  background-color: #eaeaea !important;
+  color: #a8a8a8 !important;
   cursor: auto;
 }
 .paper-button:hover {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 .paper-button.raised-button.colored:hover {
   background-color: #3367d6;
@@ -265,7 +267,7 @@ button.paper-button {
   background-color: #ffffff;
 }
 .paper-button input[type="submit"] {
-  outline-color: #cccccc;
+  outline-color: #a3a3a3;
 }
 .paper-button.colored.raised-button input[type="submit"] {
   color: #ffffff;
@@ -323,7 +325,11 @@ pre.highlight {
   color: #960050;
   background-color: #1e0010;
 }
-.highlight .k {
+.language-coq .highlight .err {
+  background-color: transparent;
+}
+.highlight .k,
+.language-coq .highlight .err {
   color: #c678dd;
 }
 .highlight .l {
@@ -518,6 +524,10 @@ pre.highlight {
   padding: 0;
   word-wrap: normal;
 }
+.highlighter-rouge .highlight .rouge-table .rouge-gutter,
+.highlighter-rouge .highlight .rouge-table .rouge-code {
+  border: 0 !important;
+}
 .highlighter-rouge .highlight .rouge-code pre {
   color: #abb2bf;
 }
@@ -552,8 +562,94 @@ pre.highlight {
     border-radius: 0px;
   }
   .highlighter-rouge .highlight td.rouge-gutter {
-    width: 46px;
+    width: 36px;
   }
+  .highlighter-rouge .highlight table > tbody > tr > td > pre {
+    padding: 14px 10px;
+  }
+}
+.search-page {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background: #fff;
+  -webkit-transition: all 400ms cubic-bezier(0.32, 1, 0.23, 1);
+  transition: all 400ms cubic-bezier(0.32, 1, 0.23, 1);
+  -webkit-transform: translate(0, 100%);
+  -ms-transform: translate(0, 100%);
+  transform: translate(0, 100%);
+  opacity: 0;
+}
+.search-page.search-active {
+  opacity: 1;
+  -webkit-transform: translate(0, 0) scale(1, 1);
+  -ms-transform: translate(0, 0) scale(1, 1);
+  transform: translate(0, 0) scale(1, 1);
+}
+.search-page.search-active .search-main {
+  opacity: 1;
+}
+.search-page .search-main {
+  padding-top: 80px;
+  height: 100%;
+  opacity: 0;
+  -webkit-transition: all 400ms cubic-bezier(0.32, 1, 0.23, 1) 250ms;
+  transition: all 400ms cubic-bezier(0.32, 1, 0.23, 1) 250ms;
+}
+.search-page .search-main .row,
+.search-page .search-main .row > div {
+  height: 100%;
+}
+.search-page .search-icon-close-container {
+  position: absolute;
+  z-index: 1;
+  padding: 16px;
+  top: 0;
+  right: 2px;
+}
+.search-page .search-icon-close-container i {
+  font-size: 20px;
+}
+.search-page #search-input {
+  font-family: "Fira Code", Menlo, Monaco, Consolas, "Courier New", monospace;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-size: 30px;
+  font-weight: bold;
+  color: #404040;
+}
+@media only screen and (min-width: 768px) {
+  .search-page #search-input {
+    margin-left: 20px;
+  }
+}
+.search-page #search-results {
+  overflow: auto;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 80px;
+}
+.search-icon a,
+.search-icon-close {
+  cursor: pointer;
+  font-size: 30px;
+  color: #311e3e;
+  -webkit-transition: all 0.25s;
+  transition: all 0.25s;
+}
+.search-icon a:hover,
+.search-icon-close:hover {
+  opacity: 0.8;
+}
+.search-icon,
+.search-icon-close {
+  font-size: 16px;
 }
 body {
   /* Hux learn from
@@ -571,6 +667,11 @@ body {
 }
 p {
   margin: 30px 0;
+}
+@media screen and (max-width: 768px) {
+  p {
+    margin: 25px 0;
+  }
 }
 h1,
 h2,
@@ -636,11 +737,19 @@ select.sel-lang {
   min-height: 28px;
   font-size: 14px;
 }
+table {
+  margin-top: 10px;
+}
 table.table > tbody th,
 table.table > thead th,
 table.table > tbody td,
 table.table > thead td {
-  border: 1px solid #eee;
+  border: 1px solid #eee !important;
+}
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    border: 0;
+  }
 }
 hr.small {
   max-width: 100px;
@@ -680,37 +789,58 @@ samp {
 .post-container h4,
 .post-container h5,
 .post-container h6 {
-  margin: 30px 0 10px;
+  margin: 50px 0 20px;
   line-height: 1.4;
 }
-.post-container h5 {
-  font-size: 19px;
-  font-weight: 600;
-  color: gray;
-}
-.post-container h5 + p {
-  margin-top: 5px;
-}
-.post-container h6 {
-  font-size: 16px;
-  font-weight: 600;
-  color: gray;
-}
+.post-container h1 + p,
+.post-container h2 + p,
+.post-container h3 + p,
+.post-container h4 + p,
+.post-container h5 + p,
 .post-container h6 + p {
-  margin-top: 5px;
+  margin-top: 20px;
+}
+.post-container h2::before {
+  content: " ";
+  display: block;
+  border-bottom: 1px solid #ececec;
+  margin-top: 44px;
+  margin-bottom: 30px;
+}
+.post-container h4 {
+  font-size: 22px;
+  font-weight: 600;
+  color: gray;
+}
+.post-container h4 + p {
+  margin-top: 10px;
+}
+.post-container h5,
+.post-container h6 {
+  font-size: 20px;
+  font-weight: 600;
+  color: gray;
+}
+.post-container h5 + p,
+.post-container h6 + p {
+  margin-top: 10px;
 }
 @media screen and (max-width: 768px) {
   .post-container h1 {
     font-size: 30px;
   }
   .post-container h2 {
-    font-size: 24px;
+    font-size: 22px;
   }
   .post-container h3 {
-    font-size: 21px;
+    font-size: 20px;
   }
   .post-container h4 {
     font-size: 19px;
+  }
+  .post-container h5,
+  .post-container h6 {
+    font-size: 18px;
   }
 }
 .post-container ul,
@@ -761,20 +891,20 @@ samp {
   width: 100%;
 }
 .post-container .pager li > a > span {
-  color: #cccccc;
+  color: #a3a3a3;
   font-weight: normal;
   letter-spacing: 0.5px;
 }
 .post-container .anchorjs-link {
   position: absolute;
-  padding-top: 1px;
+  text-decoration: none !important;
 }
 @media only screen and (max-width: 767px) {
   /**
-	 * Layout
-	 * Since V1.6 we use absolute positioning to prevent to expand container-fluid
-	 * which would cover tags. A absolute positioning make a new layer.
-	 */
+   * Layout
+   * Since V1.6 we use absolute positioning to prevent to expand container-fluid
+   * which would cover tags. A absolute positioning make a new layer.
+   */
   .navbar-default .navbar-collapse {
     position: absolute;
     right: 0;
@@ -786,13 +916,13 @@ samp {
     width: 170px;
   }
   /**
-	 * Animation
-	 * HuxBlog-Navbar using genuine Material Design Animation
-	 */
+   * Animation
+   * HuxBlog-Navbar using genuine Material Design Animation
+   */
   #huxblog_navbar {
     /**
-		 * Sharable code and 'out' function
-		 */
+     * Sharable code and 'out' function
+     */
     opacity: 0;
     transform: scaleX(0);
     transform-origin: top right;
@@ -801,8 +931,8 @@ samp {
     -webkit-transform-origin: top right;
     -webkit-transition: all 200ms cubic-bezier(0.47, 0, 0.4, 0.99) 0ms;
     /**
-		 *'In' Animation
-		 */
+     *'In' Animation
+     */
   }
   #huxblog_navbar a {
     font-size: 13px;
@@ -973,7 +1103,7 @@ samp {
 }
 .intro-header {
   background: no-repeat center center;
-  background-color: #cccccc;
+  background-color: #a3a3a3;
   background-attachment: scroll;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -1147,7 +1277,7 @@ samp {
 }
 .post-preview > .post-meta {
   font-family: 'Lora', 'Times New Roman', serif;
-  color: #cccccc;
+  color: #a3a3a3;
   font-size: 16px;
   font-style: italic;
   margin-top: 0;
@@ -1222,56 +1352,6 @@ footer .copyright a:hover,
 footer .copyright a:focus {
   color: #0085a1;
 }
-.floating-label-form-group {
-  font-size: 14px;
-  position: relative;
-  margin-bottom: 0;
-  padding-bottom: 0.5em;
-  border-bottom: 1px solid #eeeeee;
-}
-.floating-label-form-group input,
-.floating-label-form-group textarea {
-  z-index: 1;
-  position: relative;
-  padding-right: 0;
-  padding-left: 0;
-  border: none;
-  border-radius: 0;
-  font-size: 1.5em;
-  background: none;
-  box-shadow: none !important;
-  resize: none;
-}
-.floating-label-form-group label {
-  display: block;
-  z-index: 0;
-  position: relative;
-  top: 2em;
-  margin: 0;
-  font-size: 0.85em;
-  line-height: 1.764705882em;
-  vertical-align: middle;
-  vertical-align: baseline;
-  opacity: 0;
-  -webkit-transition: top 0.3s ease, opacity 0.3s ease;
-  -moz-transition: top 0.3s ease, opacity 0.3s ease;
-  -ms-transition: top 0.3s ease, opacity 0.3s ease;
-  transition: top 0.3s ease, opacity 0.3s ease;
-}
-.floating-label-form-group::not(:first-child) {
-  padding-left: 14px;
-  border-left: 1px solid #eeeeee;
-}
-.floating-label-form-group-with-value label {
-  top: 0;
-  opacity: 1;
-}
-.floating-label-form-group-with-focus label {
-  color: #0085a1;
-}
-form .row:first-child .floating-label-form-group {
-  border-top: 1px solid #eeeeee;
-}
 .btn {
   /* Hux learn from
      *     TypeIsBeautiful,
@@ -1340,7 +1420,7 @@ form .row:first-child .floating-label-form-group {
 .pager .disabled > a:hover,
 .pager .disabled > a:focus,
 .pager .disabled > span {
-  color: #cccccc;
+  color: #a3a3a3;
   background-color: #404040;
   cursor: not-allowed;
 }
@@ -1445,7 +1525,7 @@ img::-moz-selection {
 #tag_cloud a.tag-button--all,
 #tag_cloud .tag.tag-button--all {
   font-weight: 700;
-  color: #0085a1!important;
+  color: #0085a1 !important;
 }
 #tag_cloud a.tag-button--all:hover,
 #tag_cloud .tag.tag-button--all:hover,
@@ -1563,46 +1643,6 @@ img::-moz-selection {
 .navbar-default .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 3px;
 }
-/* Hux customize Style for Duoshuo */
-.comment {
-  margin-top: 20px;
-}
-.comment #ds-thread #ds-reset a.ds-like-thread-button {
-  border: 1px solid #ddd;
-  border-radius: 0px;
-  background: white;
-  box-shadow: none;
-  text-shadow: none;
-}
-.comment #ds-thread #ds-reset li.ds-tab a.ds-current {
-  border: 1px solid #ddd;
-  border-radius: 0px;
-  background: white;
-  box-shadow: none;
-  text-shadow: none;
-}
-.comment #ds-thread #ds-reset .ds-textarea-wrapper {
-  background: none;
-}
-.comment #ds-thread #ds-reset .ds-gradient-bg {
-  background: none;
-}
-.comment #ds-thread #ds-reset .ds-post-options {
-  border-bottom: 1px solid #ccc;
-}
-.comment #ds-thread #ds-reset .ds-post-button {
-  border-bottom: 1px solid #ccc;
-}
-.comment #ds-thread #ds-reset .ds-post-button {
-  background: white;
-  box-shadow: none;
-}
-.comment #ds-thread #ds-reset .ds-post-button:hover {
-  background: #eeeeee;
-}
-#ds-smilies-tooltip ul.ds-smilies-tabs li a {
-  background: white !important;
-}
 .page-fullscreen .intro-header {
   position: fixed;
   left: 0;
@@ -1650,4 +1690,7 @@ img::-moz-selection {
 .MathJax_SVG_Display {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+}
+.no-scroll {
+  overflow-y: hidden;
 }
